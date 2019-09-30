@@ -1,0 +1,8 @@
+com.shu.shuny.serialization.serializer.impl.AvroSerializer
+com.shu.shuny.serialization.serializer.impl.HessianSerializer
+com.shu.shuny.serialization.serializer.impl.JavaDefaultSerializer
+com.shu.shuny.serialization.serializer.impl.JSON2Serializer
+com.shu.shuny.serialization.serializer.impl.JSONSerializer
+com.shu.shuny.serialization.serializer.impl.MarshallingSerializer
+com.shu.shuny.serialization.serializer.impl.ThriftSerializer
+com.shu.shuny.serialization.serializer.impl.XmlSerializer
