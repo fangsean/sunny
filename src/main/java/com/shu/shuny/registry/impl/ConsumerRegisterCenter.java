@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.shu.shuny.model.ProviderServiceMeta;
 import org.apache.commons.collections.MapUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +21,7 @@ import static java.util.stream.Collectors.toList;
 public abstract class ConsumerRegisterCenter {
     //服务端ZK服务元信息,选择服务(第一次直接从ZK拉取,后续由ZK的监听机制主动更新)
     private static final Map<String, List<ProviderServiceMeta>> serviceMetaDataMapConsume = Maps.newConcurrentMap();
-    public static String INVOKER_TYPE = "consumer";
+    public  static final String INVOKER_TYPE = "consumer";
 
 
     public void initProviderMap(String serviceKey, String version) {
@@ -38,7 +39,7 @@ public abstract class ConsumerRegisterCenter {
             return;
         }
         ConcurrentHashMap<String, List<ProviderServiceMeta>> result =
-            serviceMetaDataMapConsume.values().stream().flatMap(e -> e.stream())
+            serviceMetaDataMapConsume.values().stream().flatMap(Collection::stream)
                 .filter(e -> serviceIpList.contains(e.getServerIp()))
                 .collect(groupingBy(e -> e.getServiceInterface().getName(), ConcurrentHashMap::new, toList()));
         serviceMetaDataMapConsume.putAll(result);

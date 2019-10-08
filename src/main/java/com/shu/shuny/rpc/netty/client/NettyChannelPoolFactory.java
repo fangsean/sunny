@@ -1,11 +1,11 @@
-package com.shu.shuny.consumer;
+package com.shu.shuny.rpc.netty.client;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.common.exception.BizException;
-import com.shu.shuny.common.util.PropertyConfigeHelper;
+import com.shu.shuny.common.util.PropertyConfigerHelper;
 import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.model.SunnyRequest;
 import com.shu.shuny.serialization.NettyDecoderHandler;
@@ -17,6 +17,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ import java.util.concurrent.CountDownLatch;
  * @Description:
  * @Date 2019/10/2 20:48
  */
+@NoArgsConstructor(access= AccessLevel.PRIVATE)
 public class NettyChannelPoolFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyChannelPoolFactory.class);
@@ -43,15 +46,14 @@ public class NettyChannelPoolFactory {
     //Key为服务提供者地址,value为Netty Channel阻塞队列
     private static final Map<InetSocketAddress, ArrayBlockingQueue<Channel>> channelPoolMap = Maps.newConcurrentMap();
     //初始化Netty Channel阻塞队列的长度,该值为可配置信息
-    private static final int channelConnectSize = PropertyConfigeHelper.getChannelConnectSize();
+    private static final int CHANNEL_CONNECT_SIZE = PropertyConfigerHelper.getChannelConnectSize();
     //初始化序列化协议类型,该值为可配置信息
-    private static final SerializeTypeEnum serializeType = PropertyConfigeHelper.getSerializeType();
+    private static final SerializeTypeEnum serializeType = PropertyConfigerHelper.getSerializeType();
     //服务提供者列表
     private List<ProviderServiceMeta> serviceMetaDataList = Lists.newArrayList();
 
 
-    private NettyChannelPoolFactory() {
-    }
+
 
 
     /**
@@ -83,7 +85,7 @@ public class NettyChannelPoolFactory {
         for (InetSocketAddress socketAddress : socketAddressSet) {
             try {
                 int realChannelConnectSize = 0;
-                while (realChannelConnectSize < channelConnectSize) {
+                while (realChannelConnectSize < CHANNEL_CONNECT_SIZE) {
                     Channel channel = null;
                     while (channel == null) {
                         //若channel不存在,则注册新的Netty Channel
@@ -96,13 +98,13 @@ public class NettyChannelPoolFactory {
                     // 并将阻塞队列channelArrayBlockingQueue作为value存入channelPoolMap
                     ArrayBlockingQueue<Channel> channelArrayBlockingQueue = channelPoolMap.get(socketAddress);
                     if (channelArrayBlockingQueue == null) {
-                        channelArrayBlockingQueue = new ArrayBlockingQueue<Channel>(channelConnectSize);
+                        channelArrayBlockingQueue = new ArrayBlockingQueue<>(CHANNEL_CONNECT_SIZE);
                         channelPoolMap.put(socketAddress, channelArrayBlockingQueue);
                     }
                     channelArrayBlockingQueue.offer(channel);
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new BizException(e);
             }
         }
     }
@@ -183,19 +185,16 @@ public class NettyChannelPoolFactory {
 
             final List<Boolean> isSuccessHolder = Lists.newArrayListWithCapacity(1);
             //监听Channel是否建立成功
-            channelFuture.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    //若Channel建立成功,保存建立成功的标记
-                    if (future.isSuccess()) {
-                        isSuccessHolder.add(Boolean.TRUE);
-                    } else {
-                        //若Channel建立失败,保存建立失败的标记
-                        future.cause().printStackTrace();
-                        isSuccessHolder.add(Boolean.FALSE);
-                    }
-                    connectedLatch.countDown();
+            channelFuture.addListener((ChannelFutureListener) future -> {
+                //若Channel建立成功,保存建立成功的标记
+                if (future.isSuccess()) {
+                    isSuccessHolder.add(Boolean.TRUE);
+                } else {
+                    //若Channel建立失败,保存建立失败的标记
+                    logger.warn("register Channel error (msg={})", future.cause());
+                    isSuccessHolder.add(Boolean.FALSE);
                 }
+                connectedLatch.countDown();
             });
 
             connectedLatch.await();

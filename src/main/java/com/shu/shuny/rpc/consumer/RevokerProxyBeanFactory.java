@@ -1,7 +1,8 @@
-package com.shu.shuny.consumer;
+package com.shu.shuny.rpc.consumer;
 
 
 
+import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.model.SunnyRequest;
 import com.shu.shuny.model.SunnyResponse;
@@ -89,7 +90,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
                 return response.getResult();
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BizException(e);
         }
         return null;
     }
@@ -102,7 +103,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
 
     private static volatile RevokerProxyBeanFactory singleton;
 
-    public static RevokerProxyBeanFactory singleton(Class<?> targetInterface, int consumeTimeout, String clusterStrategy) throws Exception {
+    public static RevokerProxyBeanFactory singleton(Class<?> targetInterface, int consumeTimeout, String clusterStrategy)  {
         if (null == singleton) {
             synchronized (RevokerProxyBeanFactory.class) {
                 if (null == singleton) {

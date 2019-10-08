@@ -1,6 +1,5 @@
 package com.shu.shuny.serialization;
 
-import com.shu.shuny.common.annotation.SerializeType;
 import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.serialization.engine.SerializerEngine;
 import io.netty.buffer.ByteBuf;

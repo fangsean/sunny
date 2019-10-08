@@ -1,7 +1,8 @@
-package com.shu.shuny.consumer;
+package com.shu.shuny.rpc.consumer;
 
 import com.shu.shuny.model.SunnyRequest;
 import com.shu.shuny.model.SunnyResponse;
+import com.shu.shuny.rpc.netty.client.NettyChannelPoolFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import org.slf4j.Logger;

@@ -6,7 +6,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class MainClient {
-
     private static final Logger logger = LoggerFactory.getLogger(MainClient.class);
 
     public static void main(String[] args) throws Exception {
@@ -15,14 +14,12 @@ public class MainClient {
         final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("sunny-client.xml");
         //获取远程服务
         final HelloService helloService = (HelloService) context.getBean("remoteHelloService");
-
         long count = 20;
-
         //调用服务并打印结果
         for (int i = 0; i < count; i++) {
             try {
                 String result = helloService.sayHello("舒超群,i=" + i);
-                System.out.println("result="+result);
+                logger.info("result=" + result);
             } catch (Exception e) {
                 logger.warn("--------", e);
             }

@@ -1,15 +1,20 @@
-package com.shu.shuny.consumer;
+package com.shu.shuny.rpc.consumer;
 
 import com.google.common.collect.Maps;
+import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.model.SunnyResponse;
 import com.shu.shuny.model.SunnyResponseWrapper;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class RevokerResponseHolder {
 
     //服务返回结果Map
@@ -30,7 +35,7 @@ public class RevokerResponseHolder {
                         Thread.sleep(10);
                     }
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    log.warn("{}", e);
                 }
 
             }
@@ -73,7 +78,7 @@ public class RevokerResponseHolder {
         try {
             return responseWrapper.getResponseQueue().poll(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new BizException(e);
         } finally {
             responseMap.remove(requestUniqueKey);
         }

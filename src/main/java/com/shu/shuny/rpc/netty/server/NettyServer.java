@@ -1,7 +1,8 @@
-package com.shu.shuny.provider;
+package com.shu.shuny.rpc.netty.server;
 
 import com.shu.shuny.common.enumeration.SerializeTypeEnum;
-import com.shu.shuny.common.util.PropertyConfigeHelper;
+import com.shu.shuny.common.exception.BizException;
+import com.shu.shuny.common.util.PropertyConfigerHelper;
 import com.shu.shuny.model.SunnyRequest;
 import com.shu.shuny.serialization.NettyDecoderHandler;
 import com.shu.shuny.serialization.NettyEncoderHandler;
@@ -47,7 +48,7 @@ public class NettyServer {
     /**
      * 序列化类型配置信息
      */
-    private SerializeTypeEnum serializeType = PropertyConfigeHelper.getSerializeType();
+    private SerializeTypeEnum serializeType = PropertyConfigerHelper.getSerializeType();
 
 
     public void start(final int port) {
@@ -80,7 +81,7 @@ public class NettyServer {
             try {
                 channel = serverBootstrap.bind(port).sync().channel();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new BizException(e);
             }
         }
     }
@@ -91,7 +92,7 @@ public class NettyServer {
      */
     public void stop() {
         if (null == channel) {
-            throw new RuntimeException("Netty Server Stoped");
+            throw new BizException("Netty Server Stoped");
         }
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();

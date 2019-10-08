@@ -1,5 +1,6 @@
 package com.shu.shuny.common.util;
 
+import com.shu.shuny.common.exception.BizException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +11,7 @@ import java.net.*;
 import java.util.Enumeration;
 import java.util.List;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class IPHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(IPHelper.class);
@@ -36,8 +37,7 @@ public class IPHelper {
         String netip = null;// 外网IP
 
         try {
-            Enumeration<NetworkInterface> netInterfaces =
-                    NetworkInterface.getNetworkInterfaces();
+            Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
             InetAddress ip = null;
             boolean finded = false;// 是否找到外网IP
             while (netInterfaces.hasMoreElements() && !finded) {
@@ -45,15 +45,13 @@ public class IPHelper {
                 Enumeration<InetAddress> address = ni.getInetAddresses();
                 while (address.hasMoreElements()) {
                     ip = address.nextElement();
-                    if (!ip.isSiteLocalAddress()
-                            && !ip.isLoopbackAddress()
-                            && !ip.getHostAddress().contains(":")) {// 外网IP
+                    if (!ip.isSiteLocalAddress() && !ip.isLoopbackAddress() && !ip.getHostAddress()
+                        .contains(":")) {// 外网IP
                         netip = ip.getHostAddress();
                         finded = true;
                         break;
-                    } else if (ip.isSiteLocalAddress()
-                            && !ip.isLoopbackAddress()
-                            && !ip.getHostAddress().contains(":")) {// 内网IP
+                    } else if (ip.isSiteLocalAddress() && !ip.isLoopbackAddress() && !ip.getHostAddress()
+                        .contains(":")) {// 内网IP
                         localip = ip.getHostAddress();
                     }
                 }
@@ -65,8 +63,8 @@ public class IPHelper {
                 return localip;
             }
         } catch (SocketException e) {
-            logger.warn("获取本机Ip失败:异常信息:" + e.getMessage());
-            throw new RuntimeException(e);
+            logger.warn("获取本机Ip失败:异常信息:{}", e.getMessage());
+            throw new BizException(e);
         }
     }
 
@@ -79,21 +77,20 @@ public class IPHelper {
             allNetInterfaces = NetworkInterface.getNetworkInterfaces();
             while (allNetInterfaces.hasMoreElements()) {
                 NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
-                List<InterfaceAddress> InterfaceAddress = netInterface.getInterfaceAddresses();
-                for (InterfaceAddress add : InterfaceAddress) {
-                    InetAddress Ip = add.getAddress();
-                    if (Ip != null && Ip instanceof Inet4Address) {
-                        if (StringUtils.equals(Ip.getHostAddress(), "127.0.0.1")) {
-                            continue;
+                List<InterfaceAddress> interfaceAddressList = netInterface.getInterfaceAddresses();
+                for (InterfaceAddress add : interfaceAddressList) {
+                    InetAddress addressIp = add.getAddress();
+                    if (addressIp != null && addressIp instanceof Inet4Address) {
+                        if (!StringUtils.equals(addressIp.getHostAddress(), "127.0.0.1")) {
+                            ip = addressIp.getHostAddress();
+                            break;
                         }
-                        ip = Ip.getHostAddress();
-                        break;
                     }
                 }
             }
         } catch (SocketException e) {
-            logger.warn("获取本机Ip失败:异常信息:" + e.getMessage());
-            throw new RuntimeException(e);
+            logger.warn("获取本机Ip失败:异常信息:{}", e.getMessage());
+            throw new BizException(e);
         }
         hostIp = ip;
     }

@@ -1,4 +1,4 @@
-package com.shu.shuny.provider;
+package com.shu.shuny.rpc.netty.server;
 
 
 import com.alibaba.fastjson.JSON;
@@ -84,11 +84,8 @@ public class NettyServerInvokeHandler extends SimpleChannelInboundHandler<SunnyR
                 acquire = semaphore.tryAcquire(consumeTimeOut, TimeUnit.MILLISECONDS);
                 if (acquire) {
                     result = method.invoke(serviceObject, request.getArgs());
-                    //System.out.println("---------------"+result);
                 }
             } catch (Exception e) {
-                System.err.println("错误");
-                System.out.println(JSON.toJSONString(localProviderCaches) + "  " + methodName + " " + e.getMessage());
                 result = e;
             } finally {
                 if (acquire) {

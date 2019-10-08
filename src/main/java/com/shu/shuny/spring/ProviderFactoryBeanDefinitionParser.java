@@ -1,6 +1,7 @@
 package com.shu.shuny.spring;
 
-import com.shu.shuny.provider.ProviderFactoryBean;
+import com.shu.shuny.common.exception.BizException;
+import com.shu.shuny.rpc.provider.ProviderFactoryBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -16,10 +17,11 @@ public class ProviderFactoryBeanDefinitionParser extends AbstractSingleBeanDefin
     private static final Logger logger = LoggerFactory.getLogger(ProviderFactoryBeanDefinitionParser.class);
 
 
+    @Override
     protected Class getBeanClass(Element element) {
         return ProviderFactoryBean.class;
     }
-
+    @Override
     protected void doParse(Element element, BeanDefinitionBuilder bean) {
 
         try {
@@ -49,7 +51,7 @@ public class ProviderFactoryBeanDefinitionParser extends AbstractSingleBeanDefin
             }
         } catch (Exception e) {
             logger.error("ProviderFactoryBeanDefinitionParser error.", e);
-            throw new RuntimeException(e);
+            throw new BizException(e);
         }
 
     }

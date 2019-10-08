@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.shu.shuny.common.annotation.PropertyCaption;
 import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.common.exception.BizException;
-import com.shu.shuny.model.NettyProperty;
-import com.shu.shuny.model.ZkProperties;
+import com.shu.shuny.config.NettyProperty;
+import com.shu.shuny.config.ZkProperties;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +21,16 @@ import java.util.Properties;
  * @Description:
  * @Date 2019/9/30 18:59
  */
-public class PropertyConfigeHelper {
-    private static final Logger logger = LoggerFactory.getLogger(PropertyConfigeHelper.class);
+@NoArgsConstructor
+public class PropertyConfigerHelper {
+    private static final Logger logger = LoggerFactory.getLogger(PropertyConfigerHelper.class);
     private static ZkProperties zkProperties = null;
     private static NettyProperty nettyProperty = null;
     private static final String PROPERTY_CLASSPATH = "/sunny.properties";
 
     static {
         Properties properties = new Properties();
-        try (InputStream is = PropertyConfigeHelper.class.getResourceAsStream(PROPERTY_CLASSPATH)) {
+        try (InputStream is = PropertyConfigerHelper.class.getResourceAsStream(PROPERTY_CLASSPATH)) {
             if (is == null) {
                 throw new BizException("sunny.properties.properties can not found in the classpath");
             }
@@ -68,7 +71,6 @@ public class PropertyConfigeHelper {
                         if (!StringUtils.equals(type.getSimpleName(), String.class.getSimpleName())) {
                             value = JSON.parseObject(value.toString(), type);
                         }
-                        System.out.println(value);
                         field.set(targetDo, value);
                         field.setAccessible(false);
                     } catch (Exception e) {

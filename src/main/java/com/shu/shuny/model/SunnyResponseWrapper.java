@@ -7,7 +7,7 @@ import java.util.concurrent.BlockingQueue;
 public class SunnyResponseWrapper {
 
     //存储返回结果的阻塞队列
-    private BlockingQueue<SunnyResponse> responseQueue = new ArrayBlockingQueue<SunnyResponse>(1);
+    private BlockingQueue<SunnyResponse> responseQueue = new ArrayBlockingQueue<>(1);
     //结果返回时间
     private long responseTime;
 
@@ -23,10 +23,7 @@ public class SunnyResponseWrapper {
         }
 
         long timeout = response.getInvokeTimeout();
-        if ((System.currentTimeMillis() - responseTime) > timeout) {
-            return true;
-        }
-        return false;
+        return (System.currentTimeMillis() - responseTime) > timeout;
     }
 
     public static SunnyResponseWrapper of() {

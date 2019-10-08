@@ -1,14 +1,13 @@
-package com.shu.shuny.consumer;
+package com.shu.shuny.rpc.netty.client;
 
 import com.shu.shuny.model.SunnyResponse;
+import com.shu.shuny.rpc.consumer.RevokerResponseHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.NoArgsConstructor;
 
-
+@NoArgsConstructor
 public class NettyClientInvokeHandler extends SimpleChannelInboundHandler<SunnyResponse> {
-
-    public NettyClientInvokeHandler() {
-    }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {

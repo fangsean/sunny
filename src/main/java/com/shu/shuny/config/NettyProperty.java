@@ -1,4 +1,4 @@
-package com.shu.shuny.model;
+package com.shu.shuny.config;
 
 import com.shu.shuny.common.annotation.PropertyCaption;
 import lombok.Data;

@@ -7,30 +7,31 @@ package com.shu.shuny.common;
  */
 public class Constant {
 
-    private static final String Sunny_Server_id="id";
+    public static final String Sunny_Server_id="id";
 
-    private static final String Sunny_Server_interface="interface";
+    public static final String Sunny_Server_interface="interface";
 
-
-
-    private static final String Sunny_Server_ref"ref";
+    public static final String Sunny_Server_ref="ref";
 
 
-    private static final String Sunny_Server_version="version";
+    public static final String Sunny_Server_version="version";
 
 
-    private static final String Sunny_Server_weight="weight";
+    public static final String Sunny_Server_weight="weight";
 
 
-    private static final String Sunny_Server_serviceKey="serviceKey";
+    public static final String Sunny_Server_serviceKey="serviceKey";
 
 
-    private static final String Sunny_Server_workerThreads="workerThreads";
+    public static final String Sunny_Server_workerThreads="workerThreads";
 
-    private static final String Sunny_Server_serverPort="serverPort";
+    public static final String Sunny_Server_serverPort="serverPort";
 
 
-    private static final String Sunny_Server_timeout="timeout";
+    public static final String Sunny_Server_timeout="timeout";
+
+
+    public static  final  String SLASH="/";
 
 
 

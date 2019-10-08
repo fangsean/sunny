@@ -1,4 +1,4 @@
-package com.shu.shuny.provider;
+package com.shu.shuny.rpc.provider;
 
 /**
  * @Author:shucq
@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.shu.shuny.common.util.IPHelper;
 import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.registry.impl.ZkRegisterCenter;
+import com.shu.shuny.rpc.netty.server.NettyServer;
 import lombok.Data;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;

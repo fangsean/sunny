@@ -1,6 +1,7 @@
 package com.shu.shuny.spring;
 
-import com.shu.shuny.consumer.ConsumerFactoryBean;
+import com.shu.shuny.common.exception.BizException;
+import com.shu.shuny.rpc.consumer.ConsumerFactoryBean;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +15,11 @@ public class RevokerFactoryBeanDefinitionParser extends AbstractSingleBeanDefini
     //logger
     private static final Logger logger = LoggerFactory.getLogger(RevokerFactoryBeanDefinitionParser.class);
 
+    @Override
     protected Class getBeanClass(Element element) {
         return ConsumerFactoryBean.class;
     }
-
+    @Override
     protected void doParse(Element element, BeanDefinitionBuilder bean) {
 
         try {
@@ -38,7 +40,7 @@ public class RevokerFactoryBeanDefinitionParser extends AbstractSingleBeanDefini
             }
         } catch (Exception e) {
             logger.error("RevokerFactoryBeanDefinitionParser error.", e);
-            throw new RuntimeException(e);
+            throw new BizException(e);
         }
 
     }

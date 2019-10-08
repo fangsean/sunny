@@ -1,4 +1,4 @@
-package com.shu.shuny.consumer;
+package com.shu.shuny.rpc.consumer;
 
 
 import com.shu.shuny.common.exception.BizException;
@@ -6,6 +6,7 @@ import com.shu.shuny.model.InvokerService;
 import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.registry.impl.ConsumerIRegisterCenter;
 import com.shu.shuny.registry.impl.ZkRegisterCenter;
+import com.shu.shuny.rpc.netty.client.NettyChannelPoolFactory;
 import lombok.Data;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.FactoryBean;
