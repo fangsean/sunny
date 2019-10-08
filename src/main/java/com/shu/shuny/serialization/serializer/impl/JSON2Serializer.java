@@ -5,7 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.shu.shuny.common.annotation.SerializeType;
 import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.serialization.serializer.Serializer;
-import com.shu.shuny.serialization.util.AssertUtils;
+import com.shu.shuny.common.util.AssertUtils;
 
 
 /**

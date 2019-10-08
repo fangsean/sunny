@@ -5,7 +5,7 @@ import com.shu.shuny.common.annotation.SerializeType;
 import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.serialization.serializer.Serializer;
-import com.shu.shuny.serialization.util.MarshallingCodecFactory;
+import com.shu.shuny.common.util.MarshallingCodecFactory;
 import org.jboss.marshalling.Marshaller;
 import org.jboss.marshalling.Marshalling;
 import org.jboss.marshalling.Unmarshaller;

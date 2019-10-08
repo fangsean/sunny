@@ -1,0 +1,2 @@
+http\://www.sunny.com/schema/sunny-service=com.shu.shuny.spring.SunnyRemoteServiceNamespaceHandler
+http\://www.sunny.com/schema/sunny-reference=com.shu.shuny.spring.SunnyRemoteReferenceNamespaceHandler

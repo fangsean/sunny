@@ -1,6 +1,6 @@
-package com.shu.shuny.serialization.util;
+package com.shu.shuny.common.util;
 
-import com.java.serialization.exception.BizException;
+import com.shu.shuny.common.exception.BizException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
