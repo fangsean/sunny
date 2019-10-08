@@ -34,7 +34,7 @@ public class RevokerResponseHolder {
                         }
                         Thread.sleep(10);
                     }
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     log.warn("{}", e);
                 }
 
@@ -77,7 +77,7 @@ public class RevokerResponseHolder {
         SunnyResponseWrapper responseWrapper = responseMap.get(requestUniqueKey);
         try {
             return responseWrapper.getResponseQueue().poll(timeout, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             throw new BizException(e);
         } finally {
             responseMap.remove(requestUniqueKey);

@@ -1,7 +1,6 @@
 package com.shu.shuny.registry.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.shu.shuny.common.Constant;
@@ -17,6 +16,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -135,7 +135,7 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
             return;
         }
         ConcurrentHashMap<String, List<ProviderServiceMeta>> ctivity =
-            providerServiceMap.values().stream().flatMap(e -> e.stream())
+            providerServiceMap.values().stream().flatMap(Collection::stream)
                 .filter(e -> activityServiceIpList.contains(e.getServerIp())).collect(
                 Collectors.groupingBy(e -> e.getServiceInterface().getName(), ConcurrentHashMap::new, toList()));
         providerServiceMap.putAll(ctivity);

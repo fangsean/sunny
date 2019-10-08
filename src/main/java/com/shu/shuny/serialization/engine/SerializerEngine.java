@@ -20,7 +20,7 @@ import java.util.ServiceLoader;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SerializerEngine {
-    public static final Map<SerializeTypeEnum, Serializer> serializerMap = Maps.newConcurrentMap();
+    protected static final Map<SerializeTypeEnum, Serializer> serializerMap = Maps.newConcurrentMap();
 
     static {
         ServiceLoader<Serializer> serializers = ServiceLoader.load(Serializer.class);

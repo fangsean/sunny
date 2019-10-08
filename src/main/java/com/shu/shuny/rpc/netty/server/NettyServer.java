@@ -80,7 +80,7 @@ public class NettyServer {
             });
             try {
                 channel = serverBootstrap.bind(port).sync().channel();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 throw new BizException(e);
             }
         }

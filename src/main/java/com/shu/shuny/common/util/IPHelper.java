@@ -80,7 +80,7 @@ public class IPHelper {
                 List<InterfaceAddress> interfaceAddressList = netInterface.getInterfaceAddresses();
                 for (InterfaceAddress add : interfaceAddressList) {
                     InetAddress addressIp = add.getAddress();
-                    if (addressIp != null && addressIp instanceof Inet4Address) {
+                    if ((addressIp != null) && addressIp instanceof Inet4Address) {
                         if (!StringUtils.equals(addressIp.getHostAddress(), "127.0.0.1")) {
                             ip = addressIp.getHostAddress();
                             break;
