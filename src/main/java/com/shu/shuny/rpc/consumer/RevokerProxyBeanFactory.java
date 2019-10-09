@@ -6,7 +6,7 @@ import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.model.SunnyRequest;
 import com.shu.shuny.model.SunnyResponse;
-import com.shu.shuny.registry.impl.ConsumerIRegisterCenter;
+import com.shu.shuny.registry.ConsumerIRegisterCenter;
 import com.shu.shuny.registry.impl.ZkRegisterCenter;
 
 import java.lang.reflect.InvocationHandler;

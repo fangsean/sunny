@@ -1,4 +1,4 @@
-package com.shu.shuny.registry.impl;
+package com.shu.shuny.registry;
 
 import com.shu.shuny.model.InvokerService;
 import com.shu.shuny.model.ProviderServiceMeta;

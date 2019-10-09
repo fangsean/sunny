@@ -4,7 +4,7 @@ package com.shu.shuny.rpc.consumer;
 import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.model.InvokerService;
 import com.shu.shuny.model.ProviderServiceMeta;
-import com.shu.shuny.registry.impl.ConsumerIRegisterCenter;
+import com.shu.shuny.registry.ConsumerIRegisterCenter;
 import com.shu.shuny.registry.impl.ZkRegisterCenter;
 import com.shu.shuny.rpc.netty.client.NettyChannelPoolFactory;
 import lombok.Data;

@@ -8,6 +8,7 @@ import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.common.util.IPHelper;
 import com.shu.shuny.model.InvokerService;
 import com.shu.shuny.model.ProviderServiceMeta;
+import com.shu.shuny.registry.ConsumerIRegisterCenter;
 import com.shu.shuny.registry.ProviderIRegisterCenter;
 import com.shu.shuny.registry.ZookeeperClient;
 import org.I0Itec.zkclient.IZkChildListener;
