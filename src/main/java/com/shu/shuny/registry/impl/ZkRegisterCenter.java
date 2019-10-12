@@ -11,6 +11,7 @@ import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.registry.ConsumerIRegisterCenter;
 import com.shu.shuny.registry.ProviderIRegisterCenter;
 import com.shu.shuny.registry.ZookeeperClient;
+import lombok.extern.slf4j.Slf4j;
 import org.I0Itec.zkclient.IZkChildListener;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
@@ -30,6 +31,7 @@ import static java.util.stream.Collectors.toList;
  * @Description:
  * @Date 2019/9/30 18:12
  */
+@Slf4j
 public class ZkRegisterCenter extends ConsumerRegisterCenter
     implements ProviderIRegisterCenter, ConsumerIRegisterCenter {
     ZookeeperClient zkClient = ZookeeperClient.getInstance();
@@ -120,6 +122,7 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
     }
 
     private void processListener(String parentPath, List<String> currentChilds) {
+        log.info("process {} path listener", parentPath);
         if (currentChilds == null) {
             currentChilds = Lists.newArrayList();
         }

@@ -10,6 +10,7 @@ import com.shu.shuny.registry.impl.ZkRegisterCenter;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2019/10/2 18:45
  */
 @ChannelHandler.Sharable
+@Slf4j
 public class NettyServerInvokeHandler extends SimpleChannelInboundHandler<SunnyRequest> {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyServerInvokeHandler.class);
@@ -40,7 +42,8 @@ public class NettyServerInvokeHandler extends SimpleChannelInboundHandler<SunnyR
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+        log.error("Netty Server Invoke Handler error(msg={})",cause.getMessage());
+
         //发生异常,关闭链路
         ctx.close();
     }

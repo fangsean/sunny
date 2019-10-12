@@ -5,8 +5,10 @@ import com.shu.shuny.rpc.consumer.RevokerResponseHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @NoArgsConstructor
+@Slf4j
 public class NettyClientInvokeHandler extends SimpleChannelInboundHandler<SunnyResponse> {
 
     @Override
@@ -16,7 +18,7 @@ public class NettyClientInvokeHandler extends SimpleChannelInboundHandler<SunnyR
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+        log.error("Netty Client Invoke Handler error(msg={})",cause.getMessage());
         ctx.close();
     }
 

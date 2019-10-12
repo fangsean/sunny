@@ -21,7 +21,7 @@ import java.util.Properties;
  * @Description:
  * @Date 2019/9/30 18:59
  */
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyConfigerHelper {
     private static final Logger logger = LoggerFactory.getLogger(PropertyConfigerHelper.class);
     private static ZkProperties zkProperties = null;

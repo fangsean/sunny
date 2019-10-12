@@ -1,5 +1,6 @@
 package com.shu.shuny.common.util;
 
+import com.shu.shuny.common.Constants;
 import com.shu.shuny.common.exception.BizException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -80,11 +81,12 @@ public class IPHelper {
                 List<InterfaceAddress> interfaceAddressList = netInterface.getInterfaceAddresses();
                 for (InterfaceAddress add : interfaceAddressList) {
                     InetAddress addressIp = add.getAddress();
-                    if ((addressIp != null) && addressIp instanceof Inet4Address) {
-                        if (!StringUtils.equals(addressIp.getHostAddress(), "127.0.0.1")) {
-                            ip = addressIp.getHostAddress();
-                            break;
-                        }
+                    boolean hostAddressExist =
+                        (addressIp instanceof Inet4Address) && !StringUtils
+                            .equals(addressIp.getHostAddress(), Constants.CIRCUIT_IP);
+                    if (hostAddressExist) {
+                        ip = addressIp.getHostAddress();
+                        break;
                     }
                 }
             }
@@ -107,4 +109,6 @@ public class IPHelper {
     }
 
 
+    public static void main(String[] args) {
+    }
 }
