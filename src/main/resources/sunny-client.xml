@@ -11,7 +11,7 @@
                            interface="com.shu.shuny.test.HelloService"
                            clusterStrategy="WeightRandom"
                            serviceKey="sunny"
-                           version="default"
+                           version="v1"
                            timeout="3000"/>
 
 
