@@ -17,7 +17,7 @@ public class ZookeeperClient {
 
     private static ZookeeperClient zookeeperClient = new ZookeeperClient();
     // 客户端可选择为  Curator
-    ZkClient framework = CuratorZookeeperTransporter.getZkClient();
+    ZkClient framework = ZookeeperTransporter.getZkClient();
 
     public boolean isExists(String path) {
         return framework.exists(path);
