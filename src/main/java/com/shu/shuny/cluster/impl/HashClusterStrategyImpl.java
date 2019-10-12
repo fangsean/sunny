@@ -19,4 +19,9 @@ public class HashClusterStrategyImpl implements ClusterStrategy {
         int size = providerServices.size();
         return providerServices.get(hashCode % size);
     }
+
+    @Override
+    public String getName() {
+        return "HashCluster";
+    }
 }

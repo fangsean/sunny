@@ -3,9 +3,7 @@ package com.shu.shuny.cluster.impl;
 import com.shu.shuny.cluster.ClusterStrategy;
 import com.shu.shuny.model.ProviderServiceMeta;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @Author:shucq
@@ -18,6 +16,11 @@ public class WeightPollingClusterStrategyImpl implements ClusterStrategy {
     public ProviderServiceMeta doSelect(List<ProviderServiceMeta> providerServices) {
         //TODO 待实现
         return null;
+    }
+
+    @Override
+    public String getName() {
+        return "WeightPolling";
     }
 
 

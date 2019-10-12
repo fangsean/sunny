@@ -16,4 +16,9 @@ public class WeightRandomClusterStrategyImpl implements ClusterStrategy {
         //TODO 待实现
         return null;
     }
+
+    @Override
+    public String getName() {
+        return "WeightRandom";
+    }
 }

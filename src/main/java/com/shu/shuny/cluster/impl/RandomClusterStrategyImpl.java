@@ -19,5 +19,10 @@ public class RandomClusterStrategyImpl implements ClusterStrategy {
         return providerServices.get(index);
     }
 
+    @Override
+    public String getName() {
+        return "RandomCluster";
+    }
+
 
 }

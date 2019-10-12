@@ -43,4 +43,9 @@ public class PollingClusterStrategyImpl implements ClusterStrategy {
         }
         return service;
     }
+
+    @Override
+    public String getName() {
+        return "PollingCluster";
+    }
 }

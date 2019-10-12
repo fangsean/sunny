@@ -1,0 +1,5 @@
+com.shu.shuny.cluster.impl.HashClusterStrategyImpl
+com.shu.shuny.cluster.impl.PollingClusterStrategyImpl
+com.shu.shuny.cluster.impl.RandomClusterStrategyImpl
+com.shu.shuny.cluster.impl.WeightPollingClusterStrategyImpl
+com.shu.shuny.cluster.impl.WeightRandomClusterStrategyImpl
