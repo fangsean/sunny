@@ -73,7 +73,7 @@ public class ConsumerFactoryBean implements FactoryBean, InitializingBean {
         zkRegisterCenter.initProviderMap(serviceKey, version);
         Map<String, List<ProviderServiceMeta>> providerMap = zkRegisterCenter.getServiceMetaDataMapWithConsume();
         if (MapUtils.isEmpty(providerMap)) {
-            throw new BizException("service provider list is empty.");
+            throw new IllegalArgumentException("service provider list is empty.");
         }
         NettyChannelPoolFactory.channelPoolFactoryInstance().initChannelPoolFactory(providerMap);
 

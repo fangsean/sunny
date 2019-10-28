@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:SunnyServer="http://www.sunny.com/schema/sunny-service"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
        http://www.sunny.com/schema/sunny-service  http://www.sunny.com/schema/sunny-service.xsd">
 
+    <context:component-scan base-package="com.shu.shuny.test"/>
+
     <!-- 发布远程服务 -->
-    <bean id="helloService" class="com.shu.shuny.test.HelloServiceImpl"/>
     <SunnyServer:service id="helloServiceRegister"
                          interface="com.shu.shuny.test.HelloService"
                          ref="helloService"
+                         version="v1"
+                         weight="2"
+                         serviceKey="sunny"
+                         workerThreads="100"
+                         serverPort="8081"
+                         timeout="600000"/>
+
+    <SunnyServer:service id="indexServiceRegister"
+                         interface="com.shu.shuny.test.IndexService"
+                         ref="indexService"
                          version="v1"
                          weight="2"
                          serviceKey="sunny"

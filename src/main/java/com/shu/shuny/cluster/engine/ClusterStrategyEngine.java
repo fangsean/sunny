@@ -9,6 +9,7 @@ import com.shu.shuny.model.ProviderServiceMeta;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.Assert;
 
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,7 @@ public class ClusterStrategyEngine {
     }
 
     public static ProviderServiceMeta doSelectByStrategyName(String name, List<ProviderServiceMeta> providerServices) {
+        Assert.notEmpty(providerServices,"services is empty.");
         ProviderServiceMeta result = findClusterStrategyByName(name).doSelect(providerServices);
         if (result != null) {
             return result;

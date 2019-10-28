@@ -14,6 +14,11 @@ import org.w3c.dom.Element;
 import java.util.concurrent.locks.Condition;
 
 
+/**
+ * <describe>
+ * 解析所有提供者handler的配置放入bean中 </>
+ *
+ */
 public class ProviderFactoryBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
     //logger

@@ -14,5 +14,12 @@
                            version="v1"
                            timeout="3000"/>
 
+    <SunnyClient:reference id="remoteIndexService"
+                           interface="com.shu.shuny.test.IndexService"
+                           clusterStrategy="WeightRandom"
+                           serviceKey="sunny"
+                           version="v1"
+                           timeout="3000"/>
+
 
 </beans>

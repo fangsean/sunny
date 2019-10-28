@@ -9,18 +9,17 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class RevokerResponseHolder {
 
-    //服务返回结果Map
+    /**服务返回结果Map*/
     private static final Map<String, SunnyResponseWrapper> responseMap = Maps.newConcurrentMap();
-    //清除过期的返回结果
-    private static final ExecutorService removeExpireKeyExecutor = Executors.newSingleThreadExecutor();
+    /**清除过期的返回结果*/
+    private static final ExecutorService removeExpireKeyExecutor =
+            new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 
     static {
         //删除超时未获取到结果的key,防止内存泄露

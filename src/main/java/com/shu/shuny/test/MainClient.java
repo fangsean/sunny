@@ -21,7 +21,7 @@ public class MainClient {
                 String result = helloService.sayHello("舒超群,i=" + i);
                 logger.info("result=" + result);
             } catch (Exception e) {
-                logger.warn("--------", e);
+                logger.error("Remote call failed: {}", e);
             }
         }
 

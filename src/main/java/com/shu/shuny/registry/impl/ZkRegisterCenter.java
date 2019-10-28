@@ -1,6 +1,7 @@
 package com.shu.shuny.registry.impl;
 
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.shu.shuny.common.Constants;
@@ -16,7 +17,6 @@ import org.I0Itec.zkclient.IZkChildListener;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-
 
 import java.util.Collection;
 import java.util.List;
@@ -35,11 +35,12 @@ import static java.util.stream.Collectors.toList;
 public class ZkRegisterCenter extends ConsumerRegisterCenter
     implements ProviderIRegisterCenter, ConsumerIRegisterCenter {
     ZookeeperClient zkClient = ZookeeperClient.getInstance();
-    //服务提供者列表,Key:服务提供者接口  value:服务提供者服务方法列表
+    /**服务提供者列表,Key:服务提供者接口  value:服务提供者服务方法列表*/
     private static final Map<String, List<ProviderServiceMeta>> providerServiceMap = Maps.newConcurrentMap();
     // 服务提供者标致
     public static final String PROVIDER_TYPE = "provider";
     private static final String ROOT_PATH = "/config_register";
+    private static final String NODE_BUF = "%";
     private static ZkRegisterCenter registerCenter = new ZkRegisterCenter();
 
     public static ZkRegisterCenter singleton() {
@@ -84,8 +85,8 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
         int workerThreads = providerServiceMetas.get(0).getWorkerThreads();//服务工作线程
         String localIp = IPHelper.localIp();
         String currentServiceIpNode =
-            servicePath + Constants.SLASH + localIp + "|" + serverPort + "|" + weight + "|" + workerThreads + "|"
-                + version;
+            servicePath + Constants.SLASH + localIp + NODE_BUF + serverPort + NODE_BUF + weight + NODE_BUF
+                    + workerThreads + NODE_BUF + version;
         exist = zkClient.isExists(currentServiceIpNode);
         if (!exist) {
             //注意,这里创建的是临时节点
@@ -93,8 +94,6 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
         }
 
         zkClient.subscribeChildChanges(servicePath, this::processListener);
-
-
 
     }
 
@@ -128,7 +127,7 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
         }
         //存活的服务IP列表
         List<String> activityServiceIpList =
-            Lists.newArrayList(Lists.transform(currentChilds, input -> StringUtils.split(input, "|")[0]));
+            Lists.newArrayList(Lists.transform(currentChilds, input -> StringUtils.split(input, NODE_BUF)[0]));
         refreshActivityService(activityServiceIpList);
     }
 
@@ -156,11 +155,12 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
             String servicePath = providePath + Constants.SLASH + serviceName + Constants.SLASH + PROVIDER_TYPE;
             List<String> ipPathList = zkClient.getChildren(servicePath);
             for (String ipPath : ipPathList) {
-                String serverIp = StringUtils.split(ipPath, "|")[0];
-                String serverPort = StringUtils.split(ipPath, "|")[1];
-                int weight = Integer.parseInt(StringUtils.split(ipPath, "|")[2]);
-                int workerThreads = Integer.parseInt(StringUtils.split(ipPath, "|")[3]);
-                String group = StringUtils.split(ipPath, "|")[4];
+                List<String> elements = Splitter.on(NODE_BUF).trimResults().omitEmptyStrings().splitToList(ipPath);
+                String serverIp = elements.get(0);
+                String serverPort = elements.get(1);
+                int weight = Integer.parseInt(elements.get(2));
+                int workerThreads = Integer.parseInt(elements.get(3));
+                String group = elements.get(4);
                 List<ProviderServiceMeta> providerServiceList = providerServiceMap.get(serviceName);
                 if (providerServiceList == null) {
                     providerServiceList = Lists.newArrayList();
@@ -181,16 +181,13 @@ public class ZkRegisterCenter extends ConsumerRegisterCenter
             }
 
             //监听注册服务的变化,同时更新数据到本地缓存
-            zkClient.subscribeChildChanges(servicePath, new IZkChildListener() {
-                @Override
-                public void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
-                    if (currentChilds == null) {
-                        currentChilds = Lists.newArrayList();
-                    }
-                    currentChilds =
-                        Lists.newArrayList(Lists.transform(currentChilds, input -> StringUtils.split(input, "|")[0]));
-                    refreshServiceMetaDataMap(currentChilds);
+            zkClient.subscribeChildChanges(servicePath, (parentPath, currentChilds) -> {
+                // todo: 该方法重写
+                if (currentChilds == null) {
+                    currentChilds = Lists.newArrayList();
                 }
+                currentChilds = Lists.newArrayList(Lists.transform(currentChilds, input -> StringUtils.split(input, NODE_BUF)[0]));
+                refreshServiceMetaDataMap(currentChilds);
             });
         }
         return providerServiceMapResult;

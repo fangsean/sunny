@@ -1,7 +1,6 @@
 package com.shu.shuny.rpc.consumer;
 
 
-
 import com.shu.shuny.cluster.engine.ClusterStrategyEngine;
 import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.model.ProviderServiceMeta;
@@ -16,10 +15,7 @@ import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 
 public class RevokerProxyBeanFactory implements InvocationHandler {
@@ -59,10 +55,10 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
         // 获取某个接口的服务提供者列表
         ConsumerIRegisterCenter zkRegisterCenter = ZkRegisterCenter.singleton();
         List<ProviderServiceMeta> providerServices =
-            ((ZkRegisterCenter) zkRegisterCenter).getServiceMetaDataMapWithConsume().get(serviceKey);
+                ((ZkRegisterCenter) zkRegisterCenter).getServiceMetaDataMapWithConsume().get(serviceKey);
         // 根据软负载策略,从服务提供者列表选取本次调用的服务提供者
         ProviderServiceMeta providerService =
-            ClusterStrategyEngine.doSelectByStrategyName(clusterStrategy, providerServices);
+                ClusterStrategyEngine.doSelectByStrategyName(clusterStrategy, providerServices);
         // 复制一份服务提供者信息
         ProviderServiceMeta newProvider = providerService.copy();
         // 设置本次调用服务的方法以及接口
@@ -87,7 +83,9 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
             if (fixedThreadPool == null) {
                 synchronized (RevokerProxyBeanFactory.class) {
                     if (null == fixedThreadPool) {
-                        fixedThreadPool = Executors.newFixedThreadPool(threadWorkerNumber);
+                        fixedThreadPool = new ThreadPoolExecutor(threadWorkerNumber, threadWorkerNumber,
+                                0L, TimeUnit.MILLISECONDS,
+                                new LinkedBlockingQueue<Runnable>());
                     }
                 }
             }
@@ -97,7 +95,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
             InetSocketAddress inetSocketAddress = new InetSocketAddress(serverIp, serverPort);
             // 提交本次调用信息到线程池fixedThreadPool,发起调用
             Future<SunnyResponse> responseFuture =
-                fixedThreadPool.submit(RevokerServiceCallable.of(inetSocketAddress, request));
+                    fixedThreadPool.submit(RevokerServiceCallable.of(inetSocketAddress, request));
             // 获取调用的返回结果
             SunnyResponse response = responseFuture.get(request.getInvokeTimeout(), TimeUnit.MILLISECONDS);
             if (response != null) {
@@ -112,14 +110,14 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
 
     public Object getProxy() {
         return Proxy
-            .newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[] {targetInterface}, this);
+                .newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[]{targetInterface}, this);
     }
 
 
     private static volatile RevokerProxyBeanFactory singleton;
 
     public static RevokerProxyBeanFactory singleton(Class<?> targetInterface, int consumeTimeout,
-        String clusterStrategy) {
+                                                    String clusterStrategy) {
         if (null == singleton) {
             synchronized (RevokerProxyBeanFactory.class) {
                 if (null == singleton) {

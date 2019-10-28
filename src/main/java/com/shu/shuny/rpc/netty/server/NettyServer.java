@@ -20,6 +20,8 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PreDestroy;
 
@@ -30,6 +32,9 @@ import javax.annotation.PreDestroy;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NettyServer {
+    //logger
+    private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
+
     private static NettyServer nettyServer = new NettyServer();
 
     /**
@@ -81,7 +86,10 @@ public class NettyServer {
             try {
                 channel = serverBootstrap.bind(port).sync().channel();
             } catch (Exception e) {
-                throw new BizException(e);
+                e.printStackTrace();
+                logger.error(e.getMessage());
+                //启动异常停止
+                System.exit(0);
             }
         }
     }

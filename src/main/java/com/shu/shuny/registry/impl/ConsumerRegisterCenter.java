@@ -33,8 +33,13 @@ public abstract class ConsumerRegisterCenter {
     protected abstract Map<String, List<ProviderServiceMeta>> fetchOrUpdateServiceMetaData(String serviceKey,
         String version);
 
+    /**
+     * todo: 该方法重写
+     * @param serviceIpList
+     */
     protected void refreshServiceMetaDataMap(List<String> serviceIpList) {
-        serviceMetaDataMapConsume.clear();
+        //todo: 暂时注释掉
+        // serviceMetaDataMapConsume.clear();
         if (serviceIpList == null) {
             return;
         }
