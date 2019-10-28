@@ -25,7 +25,7 @@ ThriftSerializer
 
 XmlSerializer
 
-![架构图](https://dd-uat.oss-cn-hangzhou.aliyuncs.com/EC1804161BCBGXDS/6b474324-7ad9-4ca7-9336-3937b5a16090.png?Expires=1571118563&OSSAccessKeyId=LTAIW3TdsFRisDtO&Signature=SkmCkKum32K9pvwj9GEALLan5tI%3D&x-oss-process=image%2Fcrop%2Cx_0%2Cy_0%2Cw_1057%2Ch_843%2Frotate%2C360%2Fauto-orient%2C1)
+![架构图](https://note.youdao.com/ynoteshare1/index.html?id=f769d30772e8d6b76d16b4350d15e7c6&type=note)
 
 #### 安装教程
 
