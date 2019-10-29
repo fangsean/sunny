@@ -1,7 +1,6 @@
 package com.shu.shuny.rpc.consumer;
 
 
-import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.model.InvokerService;
 import com.shu.shuny.model.ProviderServiceMeta;
 import com.shu.shuny.registry.ConsumerIRegisterCenter;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
 /**
  * @Author:shucq
  * @Description:
@@ -24,42 +22,17 @@ import java.util.Map;
  */
 @Data
 public class ConsumerFactoryBean implements FactoryBean, InitializingBean {
-    /**
-     * 服务接口
-     */
-    private Class<?> targetInterface;
-
-    /**
-     * 超时时间
-     */
-    private int timeout;
-
-    /**
-     * 服务实现
-     */
-    private Object serviceImpl;
-
-    /**
-     * 负载均衡策略
-     */
-    private String clusterStrategy;
-
-    /**
-     * 服务提供者唯一标识
-     */
-    private String serviceKey;
-
-    //服务分组组名
-    private String version = "v1";
+    /**用集合对象封存*/
+    private InvokerService invoker;
 
     @Override
-    public Object getObject() throws Exception {
-        return serviceImpl;
+    public Object getObject() {
+        return invoker.getServiceImpl();
     }
 
     @Override
     public Class<?> getObjectType() {
-        return targetInterface;
+        return invoker.getServiceInterface();
     }
 
     @Override
@@ -70,7 +43,7 @@ public class ConsumerFactoryBean implements FactoryBean, InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         ConsumerIRegisterCenter zkRegisterCenter = ZkRegisterCenter.singleton();
-        zkRegisterCenter.initProviderMap(serviceKey, version);
+        zkRegisterCenter.initProviderMap(invoker.getServiceKey(), invoker.getVersion());
         Map<String, List<ProviderServiceMeta>> providerMap = zkRegisterCenter.getServiceMetaDataMapWithConsume();
         if (MapUtils.isEmpty(providerMap)) {
             throw new IllegalArgumentException("service provider list is empty.");
@@ -78,14 +51,10 @@ public class ConsumerFactoryBean implements FactoryBean, InitializingBean {
         NettyChannelPoolFactory.channelPoolFactoryInstance().initChannelPoolFactory(providerMap);
 
         //获取服务提供者代理对象  重点  方法拦截代理
-        RevokerProxyBeanFactory proxyFactory =
-            RevokerProxyBeanFactory.singleton(targetInterface, timeout, clusterStrategy);
-        this.serviceImpl = proxyFactory.getProxy();
+        RevokerProxyBeanFactory proxyFactory = RevokerProxyBeanFactory.singleton(
+                invoker.getServiceInterface(), invoker.getTimeout(), invoker.getClusterStrategy());
+        this.invoker.setServiceImpl(proxyFactory.getProxy());
         //将消费者信息注册到注册中心
-        InvokerService invoker = new InvokerService();
-        invoker.setServiceInterface(targetInterface);
-        invoker.setServiceKey(serviceKey);
-        invoker.setVersion(version);
-        zkRegisterCenter.registerInvoker(invoker);
+        zkRegisterCenter.registerInvoker(this.invoker);
     }
 }

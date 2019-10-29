@@ -29,7 +29,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
     /**
      * 超时时间
      */
-    private int consumeTimeout;
+    private long consumeTimeout;
 
     /**
      * 调用者线程数
@@ -42,7 +42,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
     private String clusterStrategy;
 
 
-    public RevokerProxyBeanFactory(Class<?> targetInterface, int consumeTimeout, String clusterStrategy) {
+    public RevokerProxyBeanFactory(Class<?> targetInterface, long consumeTimeout, String clusterStrategy) {
         this.targetInterface = targetInterface;
         this.consumeTimeout = consumeTimeout;
         this.clusterStrategy = clusterStrategy;
@@ -83,8 +83,8 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
             if (fixedThreadPool == null) {
                 synchronized (RevokerProxyBeanFactory.class) {
                     if (null == fixedThreadPool) {
-                        fixedThreadPool = new ThreadPoolExecutor(threadWorkerNumber, threadWorkerNumber,
-                                0L, TimeUnit.MILLISECONDS,
+                        fixedThreadPool = new ThreadPoolExecutor(
+                                threadWorkerNumber, threadWorkerNumber, 0L, TimeUnit.MILLISECONDS,
                                 new LinkedBlockingQueue<Runnable>());
                     }
                 }
@@ -116,7 +116,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
 
     private static volatile RevokerProxyBeanFactory singleton;
 
-    public static RevokerProxyBeanFactory singleton(Class<?> targetInterface, int consumeTimeout,
+    public static RevokerProxyBeanFactory singleton(Class<?> targetInterface, long consumeTimeout,
                                                     String clusterStrategy) {
         if (null == singleton) {
             synchronized (RevokerProxyBeanFactory.class) {

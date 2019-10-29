@@ -13,6 +13,8 @@ public class Constants {
 
     public static final String SUNNY_SERVER_ID = "id";
 
+    public static final String SUNNY_INVOKER = "invoker";
+
     public static final String SUNNY_INTERFACE = "interface";
 
     public static final String SUNNY_SERVER_INTERFACE = "serviceInterface";
