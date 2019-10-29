@@ -25,7 +25,7 @@ ThriftSerializer
 
 XmlSerializer
 
-![架构图](https://note.youdao.com/yws/public/resource/f769d30772e8d6b76d16b4350d15e7c6/xmlnote/BB704DB3BB9042009E3E7B0054B33165/4828)
+![架构图](src\main\resources\image\sunny-rpc.png)
 
 #### 安装教程
 
