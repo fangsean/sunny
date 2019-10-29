@@ -33,7 +33,7 @@
         <junit_version>4.11</junit_version>
         <lombok_version>1.18.8</lombok_version>
         <!--netty-->
-        <netty4_version>4.1.7.Final</netty4_version>
+        <netty4_version>4.1.42.Final</netty4_version>
         <!--Spring-->
         <spring_version>4.3.16.RELEASE</spring_version>
         <aspectj.version>1.8.0</aspectj.version>
