@@ -35,6 +35,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
      * 调用者线程数
      */
     private static int threadWorkerNumber = 10;
+    private static int max_threadWorkerNumber = 200;
 
     /**
      * 负载均衡策略
@@ -84,8 +85,8 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
                 synchronized (RevokerProxyBeanFactory.class) {
                     if (null == fixedThreadPool) {
                         fixedThreadPool = new ThreadPoolExecutor(
-                                threadWorkerNumber, threadWorkerNumber, 0L, TimeUnit.MILLISECONDS,
-                                new LinkedBlockingQueue<Runnable>());
+                                threadWorkerNumber, max_threadWorkerNumber, 0L, TimeUnit.MILLISECONDS,
+                                new LinkedBlockingQueue<>());
                     }
                 }
             }

@@ -8,6 +8,7 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public String sayHello(String msg) {
+        System.out.println("provider: hello " + msg + "!");
         return "hello " + msg + "!";
     }
 
