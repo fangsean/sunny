@@ -25,7 +25,7 @@ ThriftSerializer
 
 XmlSerializer
 
-![架构图](src\main\resources\image\sunny-rpc.png)
+![架构图](src/main/resources/image/sunny-rpc.png)
 
 #### 安装教程
 
