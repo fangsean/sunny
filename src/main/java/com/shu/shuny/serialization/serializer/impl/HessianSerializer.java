@@ -7,9 +7,11 @@ import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.serialization.serializer.Serializer;
 import com.shu.shuny.common.util.AssertUtils;
+import org.apache.commons.lang.SerializationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * @Author:shucq
@@ -21,13 +23,21 @@ public class HessianSerializer implements Serializer {
     @Override
     public <T> byte[] serialize(T obj) {
         AssertUtils.checkNull(obj);
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
             HessianOutput ho = new HessianOutput(bos);
             ho.writeObject(obj);
-            return bos.toByteArray();
         } catch (Exception e) {
-            throw new BizException(e);
+            throw new SerializationException(e);
+        }finally {
+            try {
+                bos.flush();
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return bos.toByteArray();
     }
 
     @Override
@@ -37,7 +47,7 @@ public class HessianSerializer implements Serializer {
             HessianInput input = new HessianInput(bis);
             return (T) input.readObject();
         } catch (Exception e) {
-            throw new BizException(e);
+            throw new SerializationException(e);
         }
     }
 }

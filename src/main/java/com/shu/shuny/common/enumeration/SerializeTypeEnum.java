@@ -20,7 +20,9 @@ public enum SerializeTypeEnum {
     MARSHALLING_SERIALIZER("MarshallingSerializer"),
     AVRO_SERIALIZER("AvroSerializer"),
     PROTOCOL_BUFFER_SERIALIZER("ProtocolBufferSerializer"),
-    THRIFT_SERIALIZER("ThriftSerializer");
+    THRIFT_SERIALIZER("ThriftSerializer"),
+    KRYO_SERIALIZER("kryoSerializer"),
+    ;
 
     private String serializeType;
 

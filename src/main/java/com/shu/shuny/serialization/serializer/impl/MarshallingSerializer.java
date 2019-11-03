@@ -6,6 +6,7 @@ import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.serialization.serializer.Serializer;
 import com.shu.shuny.common.util.MarshallingCodecFactory;
+import org.apache.commons.lang.SerializationException;
 import org.jboss.marshalling.Marshaller;
 import org.jboss.marshalling.Marshalling;
 import org.jboss.marshalling.Unmarshaller;
@@ -29,9 +30,17 @@ public class MarshallingSerializer implements Serializer {
             marshaller.start(Marshalling.createByteOutput(byteArrayOutputStream));
             marshaller.writeObject(obj);
             marshaller.finish();
+            marshaller.close();
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            throw new BizException(e);
+            throw new SerializationException(e);
+        }finally {
+            try {
+                byteArrayOutputStream.flush();
+                byteArrayOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -44,9 +53,10 @@ public class MarshallingSerializer implements Serializer {
             unmarshaller.start(Marshalling.createByteInput(byteArrayInputStream));
             Object object = unmarshaller.readObject();
             unmarshaller.finish();
+            unmarshaller.close();
             return (T) object;
         } catch (Exception e) {
-            throw new BizException(e);
+            throw new SerializationException(e);
         }
 
     }

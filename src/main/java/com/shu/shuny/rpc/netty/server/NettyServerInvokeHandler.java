@@ -27,29 +27,27 @@ import java.util.concurrent.TimeUnit;
  * @Date 2019/10/2 18:45
  */
 @ChannelHandler.Sharable
-@Slf4j
 public class NettyServerInvokeHandler extends SimpleChannelInboundHandler<SunnyRequest> {
-
     private static final Logger logger = LoggerFactory.getLogger(NettyServerInvokeHandler.class);
 
-    //服务端限流
+    /**服务端限流*/
     private static final Map<String, Semaphore> serviceKeySemaphoreMap = Maps.newConcurrentMap();
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("Netty Server Invoke Handler error(msg={})",cause.getMessage());
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        logger.error("Netty Server Invoke Handler error(msg={})",cause.getMessage());
 
         //发生异常,关闭链路
         ctx.close();
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, SunnyRequest request) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, SunnyRequest request) {
 
         if (ctx.channel().isWritable()) {
             //从服务调用对象里获取服务提供者信息

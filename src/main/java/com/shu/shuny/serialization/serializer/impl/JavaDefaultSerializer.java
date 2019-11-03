@@ -6,11 +6,9 @@ import com.shu.shuny.common.enumeration.SerializeTypeEnum;
 import com.shu.shuny.common.exception.BizException;
 import com.shu.shuny.serialization.serializer.Serializer;
 import com.shu.shuny.common.util.AssertUtils;
+import org.apache.commons.lang.SerializationException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 /**
  * java 自带序列化方式序列化
@@ -24,13 +22,24 @@ public class JavaDefaultSerializer implements Serializer {
     @Override
     public <T> byte[] serialize(T obj) {
         AssertUtils.checkNull(obj);
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+        byte[] bytes;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(bos)) {
             oos.writeObject(obj);
-            return bos.toByteArray();
+            oos.flush();
+            oos.close();
+            bytes = bos.toByteArray();
         } catch (Exception e) {
-            throw new BizException(e);
+            throw new SerializationException(e);
+        }finally {
+            try {
+                bos.flush();
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return bytes;
     }
 
     @Override
@@ -40,7 +49,7 @@ public class JavaDefaultSerializer implements Serializer {
             ObjectInputStream input = new ObjectInputStream(bis)) {
             return (T) input.readObject();
         } catch (Exception e) {
-            throw new BizException(e);
+            throw new SerializationException(e);
         }
     }
 }
