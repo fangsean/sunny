@@ -35,7 +35,7 @@
         <!--netty-->
         <netty4_version>4.1.7.Final</netty4_version>
         <!--Spring-->
-        <spring_version>4.3.16.RELEASE</spring_version>
+        <spring_version>5.2.0.RELEASE</spring_version>
         <aspectj.version>1.8.0</aspectj.version>
 
     </properties>
