@@ -30,7 +30,7 @@
         <apache_commons>3.9</apache_commons>
         <joda_time>2.10.4</joda_time>
         <slf4j_version>1.7.28</slf4j_version>
-        <junit_version>4.11</junit_version>
+        <junit_version>4.13.1</junit_version>
         <lombok_version>1.18.8</lombok_version>
         <!--netty-->
         <netty4_version>4.1.7.Final</netty4_version>
