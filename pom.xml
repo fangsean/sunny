@@ -17,7 +17,7 @@
         <protobuf_java>3.1.0</protobuf_java>
         <avro_version>1.8.1</avro_version>
         <jboss_marshalling>2.0.9.Final</jboss_marshalling>
-        <thrift_version>0.9.3</thrift_version>
+        <thrift_version>0.14.0</thrift_version>
         <dyuproject_protostuff>1.0.9</dyuproject_protostuff>
 
         <!--注册中心-->
