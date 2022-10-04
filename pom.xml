@@ -14,7 +14,7 @@
         <thoughtworks_xstream>1.4.9</thoughtworks_xstream>
         <dyuproject_protostuff>1.0.9</dyuproject_protostuff>
         <caucho_hessian>4.0.38</caucho_hessian>
-        <protobuf_java>3.1.0</protobuf_java>
+        <protobuf_java>3.16.3</protobuf_java>
         <avro_version>1.8.1</avro_version>
         <jboss_marshalling>2.0.9.Final</jboss_marshalling>
         <thrift_version>0.9.3</thrift_version>
