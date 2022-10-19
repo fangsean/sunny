@@ -10,7 +10,7 @@
     <properties>
         <!-- 序列化 -->
         <fastjson_version>1.2.60</fastjson_version>
-        <fasterxml_jackson>2.8.6</fasterxml_jackson>
+        <fasterxml_jackson>2.13.4.1</fasterxml_jackson>
         <thoughtworks_xstream>1.4.9</thoughtworks_xstream>
         <dyuproject_protostuff>1.0.9</dyuproject_protostuff>
         <caucho_hessian>4.0.38</caucho_hessian>
